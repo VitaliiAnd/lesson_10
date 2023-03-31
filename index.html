@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>ДЗ №10</h1>
+            <h3>
+                Задача. Дано історію цін на цінні папери за деякий період
+                (згенерувати від 1 до 10000)<br>
+                1)Сформувати новий масив, у якому є тільки ті, що більші за
+                1000 грн.<br>
+                2)Сформувати новий масив, у якому є номери тільки тих, що
+                більші за 1000 грн.<br>
+                3)Сформувати список з тих цін, які більші за попереднє
+                значення<br>
+                4)Сформувати новий масив, що міститиме значення цін у
+                відсотках стосовно максимального<br>
+                5)Підрахувати кількість змін цін<br>
+                6)Визначити, чи є ціна, що менше 1000<br>
+                7)Визначати, чи усі ціни більше за 1000<br>
+                8)Підрахувати кількість цін, що більше за 1000<br>
+                9)Підрахувати суму цін, що більше за 1000<br>
+                10)Знайти першу ціну, що більше за 1000<br>
+                11)Знайти індекс першої ціни, що більше за 1000<br>
+                12)Знайти останню ціну, що більше за 1000<br>
+                13)Знайти індекс останньої ціни, що більше за 1000
+            </h3>
+            <script>
+                const minSecuritiesPrice = 1
+                const maxSecuritiesPrice = 10000
+                let userInputPeriod = parseInt(prompt('Введіть період, за який отримуємо дані'))
+
+                function getSecuritiesPricesPeriod(period) {
+                    let securitiesPriceMonth = []
+                    for (let i = 0; i < userInputPeriod; i++){
+                        securitiesPriceMonth.push(minSecuritiesPrice + Math.floor(Math.random() * maxSecuritiesPrice))
+                    }
+                    return securitiesPriceMonth
+                }
+                let securitiesPricesPeriod = getSecuritiesPricesPeriod(userInputPeriod)
+//=============1
+                const securitiesPricesBiggerThan1000 = securitiesPricesPeriod.filter(element => element > 1000)
+//=============2
+                const securitiesIndexBiggerThan1000 = securitiesPricesPeriod.map((element, index) => index).filter(index => securitiesPricesPeriod[index] > 1000)
+//=============3
+                const securitiesPricesBiggerThanPrev = securitiesPricesPeriod.filter((element, index, arr) => element > securitiesPricesPeriod[index-1])
+//=============4
+                const maxValueSecuritiesPricesPeriod = Math.max(...securitiesPricesPeriod)
+                const securitiesPricesInPercentsToMaxValue = securitiesPricesPeriod.map(element => Math.ceil(element / maxValueSecuritiesPricesPeriod * 100))
+//=============5
+                const changesPricesQuantity = securitiesPricesPeriod.reduce((prev, element, index, arr) => element !== arr[index + 1] ? ++prev : prev,0)
+//=============6
+                const isSecuritiesPricesSmaler1000 = securitiesPricesPeriod.reduce((prev, element) => element < 1000 ? 'Є' : 'Немає', '')
+//=============7
+                const isEveryEcuritiesPricesBigger1000 = securitiesPricesPeriod.every(element => element > 1000)
+                let isEveryEcuritiesPricesBigger1000Result
+                if (isEveryEcuritiesPricesBigger1000 === true) isEveryEcuritiesPricesBigger1000Result = 'всі'
+                else isEveryEcuritiesPricesBigger1000Result = 'не всі'
+//=============8
+                const securitiesPricesBigger1000Quantity = securitiesPricesPeriod.reduce((prev, element) => element > 1000 ? ++prev : prev, 0)
+                //=============9
+                const securitiesPricesBigger1000Sum = securitiesPricesPeriod.reduce((prev, element) => element > 100 ? prev + element: prev, 0)
+                //=============10
+                const securitiesPricesFirstElementBigger1000 = securitiesPricesPeriod.find(element => element > 1000)
+                //=============11
+                const securitiesPricesFirstIndexBiggerThan1000 = securitiesPricesPeriod.findIndex(element => element > 1000)
+                //=============12
+                const securitiesPricesLastElementBigger1000 = securitiesPricesPeriod.findLast(element => element > 1000)
+                //=============13
+                const securitiesPricesLastIndexBiggerThan1000 = securitiesPricesPeriod.findLastIndex(element => element > 1000)
+
+                document.write(`${securitiesPricesPeriod}`)
+                document.write(`
+                масив, у якому є тільки ті, що більші за 1000 грн.: ${securitiesPricesBiggerThan1000}<br>
+                масив, у якому є номери тільки тих, що більші за 1000 грн.: ${securitiesIndexBiggerThan1000}<br>
+                список цін, які більші за попереднє значення: ${securitiesPricesBiggerThanPrev}<br>
+                масив, що міститиме значення цін у відсотках стосовно максимального: ${securitiesPricesInPercentsToMaxValue}<br>
+                кількість змін цін: ${changesPricesQuantity}<br>
+                чи є ціна, що менше 1000: ${isSecuritiesPricesSmaler1000}<br>
+                чи усі ціни більше за 1000: ${isEveryEcuritiesPricesBigger1000Result}<br>
+                ціни більше за 1000: ${securitiesPricesBigger1000Quantity}<br>
+                сумa цін, що більше за 1000: ${securitiesPricesBigger1000Sum}<br>
+                першa цінa, що більше за 1000: ${securitiesPricesFirstElementBigger1000}<br>
+                індекс першої ціни, що більше за 1000: ${securitiesPricesFirstIndexBiggerThan1000}<br>
+                останню ціну, що більше за 1000: ${securitiesPricesLastElementBigger1000}<br>
+                індекс останньої ціни, що більше за 1000: ${securitiesPricesLastIndexBiggerThan1000}
+                `)
+            </script>
+    </body>
+</html>
